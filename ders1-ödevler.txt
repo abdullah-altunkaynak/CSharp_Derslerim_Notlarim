@@ -1,0 +1,98 @@
+********jit(just-in-time)compiler*********
+--Standart (Normal) jit compiler--
+Standart JIT compiler yalnızca çalışma zamanında çağrılan metodları derler. Yürütmeden sonra bu yöntem bellekte saklanır ve genellikle jitted olarak adlandırılır.
+Aynı yöntem için başka derlemeye gerek yoktur sonraki yöntem çağrılarına doğrudan bellek önbelleğinden erişilebilir.
+
+--Econo JIT compiler--
+Econo JIT Compiler aynı standarttaki gibi yalnızca çalışma zamanında çağrılan metodları derler. Ancak, bu derlenen yöntemler gerekli olmadığında kaldırılır ekonomikliğide buradan gelir sanırım.
+Econo JIT fikri etkileşimli uygulamalar(Bilindiği gibi etkileşimli, yani interaktif yazılımlar bir senaryo çerçevesinde, süreçlerin, amaca uygun özel olarak üretilmiş araçlar üzerinde ve belirlenmiş
+ olan amaçlar doğrultusunda sanal ortama yansıtılmasıdır) için başlangıç ​​gecikmesinin daha düşük olması için derlemeye daha az zaman harcamaktır.
+
+--Pre JIT compiler--
+PRE JIT Derleyici, tüm kaynak kodunu tek bir derleme döngüsünde yerel koda derler. NGEN(Yerel Görüntü Oluşturucu veya yalnızca NGen, .NET Framework'ün zamanından önce derleme hizmetidir. Ortak Dil
+Çalışma Zamanı'nın çalışma zamanında tam zamanında derleme yapmasına izin vermek yerine bir CLI derlemesinin önceden derlenmesini sağlar. Bazı durumlarda, yürütme JIT'den önemli ölçüde daha hızlı olacaktır)
+aracılığıyla yapılır. Derlenmiş .NET kodunu platformdan bağımsız ara durumdan platforma özel bir aşamaya dönüştürecektir Bu , hem Windows, Mac hem de Linux 32 bit ve 64 bit üzerinde çalışabilen
+.NET uygulamasını yalnızca bunlardan birinde çalışabilen geleneksel bir EXE dosyasına dönüştürdüğü anlamına gelir. 
+
+-- Multicore JIT compiler--
+Microsoft .NET Framework 4.5'te, önceki JIT derleyicisini, iki çekirdekte çalışan ve uygulama başlatma sırasında başlatma performansını iyileştirmek için derleme işleminde paralelliği
+ destekleyen bir Çok Çekirdekli JIT derleyicisi haline getirerek bir iyileştirme sunmuştur. Artık geliştirici, uygulama derleme sürecini hızlandırmak
+ için çok çekirdekli işlemcilerden yararlanabilir. Multicore JIT derleyicisi iki çekirdekle paralel olarak çalışır. İki çekirdek nedeniyle, Multicore JIT, uygulamanızın başlangıçta
+ işlemi daha hızlı başlatmasını sağlayabilir. Çok çekirdekli JIT, Web tabanlı uygulamaların yanı sıra Masaüstü Windows Presentation Foundation (WPF) uygulamaları için de önemli iyileştirmeler sağlar.
+Kayıt modu: JIT'in tüm programı derlediği ve bir profil optimizasyon sınıfı kullanarak bir JIT profili oluşturduğu ve belirli bir klasörde yürütülen profili diske kaydettiği ilk moddur.
+Oynatma modu: Bu mod, uygulama daha sonra başlatıldığında kullanılır. Oynatma modu, ana iş parçacığını desteklemek için arka plan JIT iş parçacığını kullanarak Kayıt modu sırasında kaydedilen profili diskten yüklemek için kullanılır.
+Bu özellik, ana yürütme iş parçacığı farklı bir çekirdekte çalışırken JIT Derlemesi ile ilgilenen ayrı bir işlemci çekirdeğinde çalışacak olan, önceki derlemeler sırasında oluşturulan profillere dayalı olarak yürütülmesi muhtemel
+ yöntemleri derleyen JIT tarafından çalışır. İdeal durumda, ikinci çekirdek, uygulamanın ana hat yürütmesinin önüne hızla geçer, böylece bir yöntem gerektiğinde, zaten derlenmiştir. Sonuç olarak, ana iş parçacığı çok fazla
+ derleme yapmak zorunda kalmaz ve uygulamanız daha hızlı başlar. Hangi yöntemlerin derleneceğini bilmek için özellik, Kayıt modunda yürütülen yöntemlerin kaydını tutan profil verilerini oluşturur. Ardından, uygulama bir dahaki
+ sefer çalıştırdığında, çağrı o profili arayacak ve bulduğunda tekrar oynatacaktır; bu, o profil için kaydedilen tüm yöntemleri derlemeye başladığı anlamına gelir.
+Not: MultiCore JIT, algoritmalarından yararlanmak için çok çekirdekli bir makine gerektirir, aksi takdirde CLR, tek çekirdekli makinelerde bunu göz ardı eder.
+
+--RYUJIT(64 bit derleyici) compiler--
+En temelde ryu nun ne anlama geldiğini söyleyelim RYU japonca da ejderha anlamına gelir. Yeni JIT, yüzde 30'a kadar daha hızlı başlatmaya katkıda bulunur, iki kat daha hızlıdır ve bir sunucu işleminin uzun
+ çalışması boyunca istikrarlı bir şekilde çalışan verimli ve harika bir kod üretmeye devam eder. RyuJIT'in şaşırtıcı özelliklerine daha fazla ek olarak, x86 JIT ile aynı kod tabanına dayalıdır, bu da .NET programlarının
+ mimariler arasında daha tutarlı olacağı anlamına gelir - daha basit terimlerle hata için hata uyumluluğu sağlayacaktır. Dahası, Microsoft nihayet RyuJIT aracılığıyla SIMD (Aynı işlemi birden çok veri noktasında
+ aynı anda gerçekleştiren birden çok işlem öğesine sahip bilgisayarları açıklar.-Tek Talimat, Çoklu Veri-) desteği ekledi. Bu, kullanımın
+ oyunlarda ve bilimsel araştırmalarda fizik motorlarından, hisse senedi ve tahvillerin karmaşık hesaplamalarını gerçekleştiren finansal uygulamalara kadar gittiği anlamına gelir.
+RyuJIT şu anda Topluluk Teknolojisi Önizlemesi (CTP) olarak mevcuttur ve CTP3 artık üretim dışı ortamlarında dünya çapında geliştirici kitlesi tarafından kullanılabilir. ctp ne anlamadım!:
+
+--Roslyn compiler--
+API'ler aracılığıyla hizmet olarak sunulan C # ve Visual Basic .NET dilleri için derleyiciler. Kod analizi ve yeniden düzenleme için API'ler.
+Modern entegre geliştirme ortamlarında kaynak kodu analizi için artan karmaşıklık ve taleplerle birlikte, derleyicilerin uygulama programlama arayüzlerini açığa çıkarması gerekir.(API'ler) geliştiricilerin kaynak
+ kodun sözcüksel ve sözdizimsel yapı analizi gibi derleme aşamalarını doğrudan gerçekleştirmelerine yardımcı olacak. Roslyn, başından beri bu amaçla tasarlandı. Bu, kaynak kodu analizi için özel olarak tasarlanmış araçların
+ geliştirilmesindeki engeli azaltır. Roslyn API'leri üç türdendir: özellik API'leri, çalışma alanı API'leri ve derleyici API'leri. Özellik API'leri, kaynak kodu aracı geliştiricilerinin kod yeniden düzenleme ve düzeltmeler yapmasına
+ olanak tanır. Çalışma alanı API'leri, eklenti geliştiricilerinin Visual Studio gibi entegre geliştirme ortamlarında (IDE'ler) özel olarak gerekli eylemleri gerçekleştirmelerine olanak tanırbir değişkenin referanslarını bulmak veya kod formatlamak gibi.
+ Derleyici API'leri, sözdizimi ağacı ve bağlama akışı analizi gerçekleştirmek için doğrudan çağrıları açığa çıkararak kaynak kodunun daha da karmaşık analizine olanak tanır. .NET Core gibi Ortak Dil Altyapısının (CLI) açık kaynaklı bir uygulamasını kullanan Roslyn,
+ Linux , OS X ve Windows'ta CLI kodunu çalıştırabilen platformdan bağımsız bir şekilde derleme yapabilecektir.
+
+-----RYUJIT ve Roslyn Farkı--
+Roslyn, kaynak kodunuzu alan ve IL bayt kodu üreten bir derleyicidir. RyuJIT, belirtilen bayt kodunu çalışma zamanında alır ve yerel kod üretir.
+ Roslyn'i anında kaynak kodunu derlemek için bir uygulamaya yerleştirebilirsiniz, ancak RyuJIT kesinlikle çalışma zamanı içindir ve erişilemez.
+
+
+
+
+*******XAML(Extensible Application Markup Language)********
+Genişletilebilir uygulama biçimlendirme dili. Microsoft'un uygulama arayüzlerinin oluşturulmasını sağlayan tanımlama dili.XAML, geliştiricilerin XML kullanarak tüm .NET kullanıcı arayüz elemanlarının (button, textbox … gibi) çizimlerini kontrol edebilmelerini sağlar.
+Her XAML etiketi (tag), özellikleri XML attributeleriyle kontrol edilen bir .NET Framework sınıfına birebir karşılık gelir.Örneğin <Button> elemanını ele alalım. <Button> tag’i doğrudan System.Windows.Controls.Button sınıfına karşılık gelir. Read-only olan özellikler
+ (Properties) XAML tarafından erişilemez; sadece public, get ve set methodları olan özellikler XAML ile erişilerbilirdir.Event’ler ve handler'ler de XAML attributeleri ile belirtilebilir ve event’in gerçekleşmesi sonucu çalışacak kod da code behind tarafına C# ya da
+ tercihe göre VB.NET ile yazılabilir. Nasıl ki ASP.NET’te kodu ister codebehind sayfasına ya da aspx sayfasına yazılıyorsa burada da codebehind ya da XAML dosyasına yazılabilir.XAML’ın nesneye dayalı methodolojiye dayandığını söylenebilir. Bir XAML elemanından türetilen
+ başka bir eleman ebeveyninin özelliklerini alır. XAML’dan tam anlamıyla faydalanabilmek için kalıtımın doğasını anlaşılmalıdır. Custom controller, alt sınıflar oluşturularak kullanıcı arayüzü tasarımında kullanılmak üzere XAML geliştiricilerine sunulabilir.
+XAML, bir programlama dili değildir. Uygulamaları çalıştırmak için tasarlanmamıştır. XAML dosyaları uygulamalar için kullanıcı arayüz tanımları içerir. Uygulama mantığı ve event handler’ler, codebehind sayfalarında bulunur.
+-- XAML vs XML --
+XAML, Extensible Application Markup Language anlamına gelir XML, Extensible Markup Language anlamına gelir.
+XML, verileri depolamak için tasarlanmıştır veya depolanan verilerle çalışır. XAML, bir uygulamanın görsel sunumunun arkasında kullanılmak üzere Microsoft tarafından geliştirilmiştir.
+VEYA,
+XML: Bir dosyadaki çeşitli veri türlerini tanımlamaya yardımcı olan sözdizimi etiketlerini kullanır. Diğer dilleri tanımlayan bir meta dil ve World Wide Web Consortium (W3C) tarafından oluşturulan büyük biçimlendirme dili ailesinin bir parçası olarak anılır.
+XAML: Microsoft paketinin bir parçası olan ve Microsoft Expression Blend'de geliştirilen bir uygulamanın görsel sunumuna yardımcı olan, bildirim temelli XML tabanlı bir biçimlendirme dilidir.
+
+*****ŞABLONLAR********
+--.NET FRAMEWORK--
+Windows Uygulamaları
+Windows Phone Uygulamaları
+Web Uygulamaları (ASP.Net)
+SharePoint web uygulamaları
+Silverlight web uygulamaları
+Windows Azure ile cloud uygulamaları
+MS Office için eklentiler
+Veri tabanı uygulamaları
+--ASP.NET CORE--
+ASP.NET Core, tüm ASP.NET altyapısının yeniden tasarlanarak, Web API ve MVC altyapıları ile birleştirilmesini sağlamıştır. Web uygulamaları için API’lar oluşturulması bu şekilde daha kolay hale gelmiştir. Microsoft bu platformu düzenli olarak geliştirmektedir.
+ ASP.NET Core teknolojisi sayesinde modern uygulamaları daha az efor ve maliyet ile, daha kısa sürede oluşturabilmeye olanak sağlanmıştır. Yani web uygulamaları.
+--XAMARİN--
+Xamarin, C# kullanarak cross (çapraz) platform mobil uygulama geliştirme framework'üdür.Üç mobil platformlarda (Android, iOS ve Windows) C# kullanarak Xamarin üzerinde uygulamalar yaratabilriz. Xamarin'den, tamamen native görünen ve tamamen hissedilen bir mobil
+ uygulama yapabiliyoruz. Burada, native SDK için kullanılabilen tüm özelliklere erişecek bir C# kod tabanı yazıyoruz.
+
+*****object ile dynamic arasındaki farklar*****
+dynamic ile object arasındaki en temel fark, derleme zamanındaki tip uyumsuzluğu kontrolüdür. Bildiğiniz üzere object tipini kullanabilmemiz için unboxing (kutudan çıkarma) yapmamız gerekiyor. Yani bir tip object olarak tanımlanmışsa, karşı tarafta bunun tipinin ne olacağını belirtmeliyiz.
+obj = obj + 1; //Derleme hatası!!! obj'nin tipini belirtmeliyiz
+obj = (int)obj + 1; //Şimdi çalıştı...
+Fakat dynamic tipi için böyle bir işleme gerek yok. dynamic tipler derleme sırasında hata almazken, object tipler için ise unboxing yapmalı, tipini açıkça belirtmeliyiz. Kısaca dynamic tipler bizi derleme hataları zahmetinden kurtarmaktadır. Fakat dynamic tipler her zaman güvenli bir program
+ sunmayabilirler. Dikkatli kullanılmadığında çalışma zamanı hatalarına yol açabilirler. Bundan dynamic tipleri kullanmaktan kaçınmalıyız anlamı çıkarılmamalıdır. Tam tersine dynamic tip kullanımı bazen oldukça elverişli ve gerekli olabilmektedir.
+*******CTS ve CLS*******
+--CLS--
+CLS, Ortak Dil Belirtimi anlamına gelir ve CTS'nin bir alt kümesidir. NET frameworkü altında çalışan her dilin uyması gereken bir dizi kural ve kısıtlamayı tanımlar.
+Bu kurallar dizisini izleyen dillerin CLS Uyumlu olduğu söylenir. Basit bir deyişle, CLS diller arası entegrasyonu veya Birlikte Çalışabilirliği sağlar.
+
+--CTS--
+Ortak Tip Sistemi (CTS), yönetilen kod tarafından kullanılabilen veri türlerini açıklar. CTS, bu türlerin çalışma zamanında nasıl bildirildiğini, kullanıldığını ve yönetildiğini tanımlar. Çapraz dil entegrasyonunu, tür güvenliğini ve yüksek performanslı kod yürütmeyi kolaylaştırır.
+ CTS'de tanımlanan kurallar, kendi sınıflarınızı ve değerlerinizi tanımlamak için kullanılabilir. Senin anlattığın c# daki int cts deki int32 meselesi.

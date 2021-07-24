@@ -1,0 +1,7 @@
+C:\Users\ASUS\source\repos\ders1odev\bin\Debug\ders1odev.exe.config
+C:\Users\ASUS\source\repos\ders1odev\bin\Debug\ders1odev.exe
+C:\Users\ASUS\source\repos\ders1odev\bin\Debug\ders1odev.pdb
+C:\Users\ASUS\source\repos\ders1odev\obj\Debug\ders1odev.csprojAssemblyReference.cache
+C:\Users\ASUS\source\repos\ders1odev\obj\Debug\ders1odev.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\source\repos\ders1odev\obj\Debug\ders1odev.exe
+C:\Users\ASUS\source\repos\ders1odev\obj\Debug\ders1odev.pdb
